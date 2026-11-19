@@ -1,12 +1,9 @@
 from langchain.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAI
-try:  
-      load_dotenv()
 
+load_dotenv()
 
-except:
-      print("Chave invalida")
 
 
 
