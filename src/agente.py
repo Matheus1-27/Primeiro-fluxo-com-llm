@@ -2,20 +2,40 @@ from langchain.messages import SystemMessage, HumanMessage
 from dotenv import load_dotenv
 from langchain_google_genai import GoogleGenerativeAI
 
-load_dotenv()
-
-
-
 
 def meuAgente(mensagem : str) -> str:
-     CONFIG_PROMOT = [
-           SystemMessage("apenas converse com o usuario de acordo com o que ele responder"),
-           HumanMessage(mensagem)
-           
-           ]
+      PROMPT = """
+      SUA MISSÃO SERÁ ESTRITAMENTE RESUMIR TEXTOS GRANDES INFORMADOS PELO USUÁRIO.
+      RESTRINGIR QUALQUER OUTRA PERGUNTA QUE NÃO SEJA SOBRE RESUMIR TEXTOS GRANDES, 
+      RETORNANDO PRA O USUÁRIO QUE NÃO É POSSIVEL FAZER OUTRA AÇÃO A NÃO SER RESUMIR TEXTOS.
+      AUXILIE O USUÁRIO QUAL O PROCEDIMENTO PARA ELE INFORMAR O TEXTO O QUAL QUER RESUMIR.
+      CASO O USUÁRIO PERGUNTE O QUE VOCE PODE FAZER, EXPLIQUE.
 
-     agente = GoogleGenerativeAI(model = "gemini-3.5-flash-lite")
-     resposta = agente.invoke(CONFIG_PROMOT)
+      O RESUMO DEVE SER EM TÓPICOS E DEVE DESTACAR PARTES IMPORTANTES E RELEVANTE DO TEXTO INFORMADO.
+      MODELO DE RESUMO:
 
 
-     return resposta
+      * PARA TITULOS
+      - PARA O CONTEUDO DE PARÁGRAFOS DE RESUMO
+
+
+
+      SE A MENSAGEM RECEBIDA FOR A PALAVRA "teste" RETORNE NENHUMA MENSAGEM
+
+      """
+
+
+      CONFIG_PROMPT = [
+            SystemMessage(PROMPT),
+            HumanMessage(mensagem)
+            
+            ]
+
+      agente = GoogleGenerativeAI(model = "gemini-3.5-flash-lite")
+      resposta = agente.invoke(CONFIG_PROMPT)
+
+
+      return resposta
+
+
+

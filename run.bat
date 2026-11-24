@@ -1,1 +1,2 @@
-python .\src\main.py 
+@echo off
+py -3 "%~dp0src\main.py"

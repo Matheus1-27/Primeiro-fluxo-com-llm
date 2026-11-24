@@ -1,109 +1,87 @@
 # Primeiro fluxo com LLM
 
-Aplicação de terminal que envia mensagens a um agente de inteligência artificial do Google e mostra as respostas no próprio terminal. O agente usa LangChain com o modelo `gemini-3.5-flash-lite`.
+Projeto de terminal que usa LangChain e o modelo Google Gemini `gemini-3.5-flash-lite` para resumir textos. As dependências e suas versões estão listadas em `requirements.txt`.
 
 ## Requisitos
 
-- Python 3.12 ou superior
-- Uma chave de API do Google AI Studio
-- Acesso a internet para instalar os pacotes e conversar com o modelo
+- Python 3.12 ou superior.
+- Uma chave de API do Google AI Studio.
+- Acesso à internet para instalar dependências e consultar o modelo.
 
 ## Configuração
+
+Siga os passos na raiz do projeto.
 
 ### 1. Obtenha uma chave de API
 
 1. Acesse o [Google AI Studio](https://aistudio.google.com/app/apikey) e entre na sua conta Google.
 2. Crie uma chave de API e copie o valor. A disponibilidade do modelo e as condições de uso dependem da sua conta e das regras atuais do Google.
-3. Na raiz do projeto, crie um arquivo chamado `.env` copiando o arquivo de exemplo:
+3. Crie o arquivo `.env` a partir do exemplo.
 
-   ```powershell
-   Copy-Item .env_example .env
-   ```
-
-4. Abra `.env` e substitua `SUA CHAVE DA API` pela chave obtida. O arquivo deve ficar assim:
-
-   ```dotenv
-   GOOGLE_API_KEY="sua-chave-de-api"
-   ```
-
-   Mantenha a chave privada: não a publique nem a envie para o controle de versão. O arquivo `.env` já está listado no `.gitignore`.
-
-### 2. Crie um ambiente virtual e instale os pacotes
-
-Execute os comandos a partir da pasta raiz do projeto. No Windows, usando PowerShell:
+No Windows, pelo PowerShell:
 
 ```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+Copy-Item .env_example .env
 ```
 
-O último comando instala todos os pacotes e versões especificados em `requirements.txt`. Se o comando `py -3.12` não estiver disponível, use o comando `python` para criar o ambiente virtual, desde que ele aponte para Python 3.12 ou superior.
-
-No macOS ou Linux, os comandos equivalentes são:
+No macOS ou Linux:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
+cp .env_example .env
 ```
 
-#### Instalação sem ambiente virtual
+Abra `.env`, substitua `SUA CHAVE DA API` pela chave criada e salve:
 
-Se preferir instalar os pacotes no Python do sistema, sem criar ou ativar um ambiente virtual, execute na raiz do projeto:
+```dotenv
+GOOGLE_API_KEY="sua-chave-de-api"
+```
+
+Não publique nem compartilhe sua chave. O arquivo `.env` está listado no `.gitignore`.
+
+### 2. Instale as dependências globalmente
+
+Os instaladores usam o Python 3 instalado no computador e instalam nele os pacotes e versões definidos em `requirements.txt`.
+
+No Windows, abra o PowerShell na pasta do projeto e execute:
 
 ```powershell
-py -3.12 -m pip install -r requirements.txt
+.\install.bat
 ```
 
-No macOS ou Linux, use:
+No macOS ou Linux, abra o terminal na pasta do projeto e execute:
+
+```bash
+sh ./install.sh
+```
+
+Se preferir, também pode instalar os pacotes diretamente:
+
+No Windows:
+```powershell
+py -3 -m pip install -r requirements.txt
+```
+
+No macOS ou Linux:
 
 ```bash
 python3 -m pip install -r requirements.txt
 ```
 
-Depois, execute o programa com a mesma versão do Python usada na instalação: `py -3.12 src/main.py` no Windows ou `python3 src/main.py` no macOS/Linux. Essa opção instala as dependências fora de um ambiente isolado e pode causar conflitos com outros projetos ou pacotes do sistema. Em algumas distribuições Linux, o Python do sistema não permite instalações com `pip`; nesse caso, use um ambiente virtual. Para evitar esses problemas, prefira a instalação em ambiente virtual descrita acima.
+Uma instalação global pode afetar outros projetos que usam o mesmo Python. Algumas distribuições Linux e instalações do Python gerenciadas pelo sistema operacional bloqueiam instalações globais pelo `pip`; não force a instalação ignorando essa proteção. Nesses casos, use uma instalação do Python 3.12 ou superior que permita instalar pacotes globalmente.
 
-## Execução
+## Próximos passos
 
-Com o ambiente virtual ativado e a chave configurada, execute na raiz do projeto:
+Depois de configurar o ambiente e instalar as dependências, consulte [USE.md](USE.md) para saber como executar e usar o projeto.
 
-```powershell
-python src/main.py
-```
-
-Digite uma mensagem e pressione Enter para receber a resposta no terminal. Digite `sair` para encerrar. Entradas vazias ou compostas somente por números são tratadas como inválidas.
-
-### Executar com `run.bat` no Windows
-
-O arquivo `run.bat` inicia o mesmo programa pelo terminal, executando `python .\src\main.py`. Com a chave no `.env` e as dependências já instaladas, clique duas vezes no arquivo dentro do explorador de arquivos do windows ou abra o terminal na pasta raiz do projeto e execute:
-
-```powershell
-.\run.bat
-```
-
-O script usa o comando `python` disponível no momento: se um ambiente virtual estiver ativado, usará o Python desse ambiente; caso contrário, usará a instalação de Python configurada no sistema. O `run.bat` não cria nem ativa um ambiente virtual e não instala dependências.
-
-### Executar com `run.sh` no macOS ou Linux
-
-O arquivo `run.sh` é o equivalente para macOS e Linux. Com a chave no `.env` e as dependências já instaladas, abra o terminal na pasta do projeto e execute:
-
-```bash
-sh ./run.sh
-```
-
-O script usa o comando `python3` disponível no terminal. Se um ambiente virtual estiver ativado, será usado o Python desse ambiente; caso contrário, será usada a instalação de Python configurada no sistema. O `run.sh` não cria nem ativa um ambiente virtual e não instala dependências.
-
-## Estrutura do projeto
+## Arquivos principais
 
 ```text
+.env_example   # Exemplo de configuração da chave da API
+install.bat    # Instala as dependências no Windows
+install.sh     # Instala as dependências no macOS e Linux
+requirements.txt
+run.bat        # Executa o projeto no Windows
+run.sh         # Executa o projeto no macOS e Linux
 src/
-  agente.py      # Configura e consulta o modelo Gemini
-  exceptions.py  # Valida as mensagens digitadas
-  main.py        # Interação com o usuário pelo terminal
-run.bat          # Atalho para iniciar o programa no Windows
-run.sh           # Atalho para iniciar o programa no macOS e Linux
-requirements.txt # Dependências e versões fixadas
+USE.md         # Instruções de execução e uso
 ```
